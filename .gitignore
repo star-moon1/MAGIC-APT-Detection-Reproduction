@@ -1,0 +1,46 @@
+# My venv
+Lib
+Scripts
+pyvenv.cfg
+Include
+share
+__pycache__
+# Dataset
+## trace dataset
+trace.txt
+ta1-trace-e3-official-1*
+names.json
+types.json
+metadata.json
+malicious_names.txt
+malicious.pkl
+test*.pkl
+train*.pkl
+## theia
+ta1-theia-e3-official-6*
+theia.txt
+## cadets
+ta1-cadets-e3-official*
+cadets.txt
+# 批级数据集缓存与压缩包
+data/wget/graphs.pkl
+data/wget/*.zip
+data/streamspot/graphs.pkl
+data/streamspot/*.zip
+
+# 预训练模型权重
+checkpoints/*.pt
+
+# Python 运行缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 系统临时文件
+.DS_Store
+# 所有数据集压缩包与缓存
+data/**/*.zip
+data/**/*.pkl
+
+# 评估结果缓存
+eval_result/*.pkl
