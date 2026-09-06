@@ -1,6 +1,6 @@
-MAGIC论文复现报告
-一、复现概述
-1.1 复现目标
+# MAGIC论文复现报告
+## 一、复现概述
+### 1.1 复现目标
 本次复现针对USENIX Security 2024论文《MAGIC: Detecting Advanced Persistent Threats via Masked Graph Representation Learning》，目标是搭建符合论文要求的实验环境，完成批级检测场景下的核心数据集评估，验证模型的检测性能，复现论文中的核心实验结果。
 
 1.2 复现内容
