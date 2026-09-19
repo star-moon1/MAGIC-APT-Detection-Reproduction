@@ -1,10 +1,10 @@
-# My venv
-Lib
-Scripts
+# My venv 虚拟环境
+Lib/
+Scripts/
+Include/
+share/
 pyvenv.cfg
-Include
-share
-__pycache__
+
 # Dataset
 ## trace dataset
 trace.txt
@@ -16,19 +16,24 @@ malicious_names.txt
 malicious.pkl
 test*.pkl
 train*.pkl
+
 ## theia
 ta1-theia-e3-official-6*
 theia.txt
+
 ## cadets
 ta1-cadets-e3-official*
 cadets.txt
+
 # 批级数据集缓存与压缩包
 data/wget/graphs.pkl
 data/wget/*.zip
 data/streamspot/graphs.pkl
 data/streamspot/*.zip
+data/**/*.zip
+data/**/*.pkl
 
-# 预训练模型权重
+# 预训练模型权重（大文件，不推送到GitHub）
 checkpoints/*.pt
 
 # Python 运行缓存
@@ -36,11 +41,9 @@ __pycache__/
 *.pyc
 *.pyo
 
-# 系统临时文件
-.DS_Store
-# 所有数据集压缩包与缓存
-data/**/*.zip
-data/**/*.pkl
-
 # 评估结果缓存
 eval_result/*.pkl
+
+# 系统临时文件
+.DS_Store
+Thumbs.db
