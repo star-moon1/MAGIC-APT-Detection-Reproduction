@@ -10,7 +10,7 @@ from utils.utils import set_random_seed
 from utils.loaddata import transform_graph, load_batch_level_dataset
 
 
-def batch_level_evaluation(model, pooler, device, method, dataset, n_dim=0, e_dim=0):
+def batch_level_evaluation(model, pooler, device, method, dataset, n_dim=0, e_dim=0, return_score=False):
     model.eval()
     x_list = []
     y_list = []
@@ -31,13 +31,15 @@ def batch_level_evaluation(model, pooler, device, method, dataset, n_dim=0, e_di
     x = np.concatenate(x_list, axis=0)
     y = np.array(y_list)
     if 'knn' in method:
-        test_auc, test_std = evaluate_batch_level_using_knn(100, dataset, x, y)
+        test_auc, test_std, y_test_roc, score_roc = evaluate_batch_level_using_knn(100, dataset, x, y, return_score=return_score)
     else:
         raise NotImplementedError
-    return test_auc, test_std
+    if return_score:
+        return test_auc, test_std, y_test_roc, score_roc
+    else:
+        return test_auc, test_std
 
-
-def evaluate_batch_level_using_knn(repeat, dataset, embeddings, labels):
+def evaluate_batch_level_using_knn(repeat, dataset, embeddings, labels,return_score=False):
     x, y = embeddings, labels
     if dataset == 'streamspot':
         train_count = 400
@@ -74,6 +76,10 @@ def evaluate_batch_level_using_knn(repeat, dataset, embeddings, labels):
             distances, indexes = nbrs.kneighbors(x_test, n_neighbors=n_neighbors)
 
             score = distances.mean(axis=1) / mean_distance
+            # 新增：只保存第0次随机划分的数据用于ROC绘图
+            if return_score and s == 0:
+                saved_y = y_test.copy()
+                saved_score = score.copy()
 
             auc = roc_auc_score(y_test, score)
             prec, rec, threshold = precision_recall_curve(y_test, score)
@@ -111,7 +117,11 @@ def evaluate_batch_level_using_knn(repeat, dataset, embeddings, labels):
         print('FN: {}+{}'.format(np.mean(fn_list), np.std(fn_list)))
         print('TP: {}+{}'.format(np.mean(tp_list), np.std(tp_list)))
         print('FP: {}+{}'.format(np.mean(fp_list), np.std(fp_list)))
-        return np.mean(auc_list), np.std(auc_list)
+        if return_score:
+            return np.mean(auc_list), np.std(auc_list), saved_y, saved_score
+        else:
+            return np.mean(auc_list), np.std(auc_list)
+
     else:
         set_random_seed(0)
         np.random.shuffle(benign_idx)
